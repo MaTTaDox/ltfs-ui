@@ -1,0 +1,14 @@
+{
+	"app": {
+		"title": "Long-Term File Storage",
+		"login": "Einloggen",
+		"email": "E-Mail",
+		"password": "Passwort",
+		"twitter": "Twitter",
+		"loginMessage": "Webinterface für <1>AWS Glacier</1>",
+		"github": "GitHub",
+		"overview": "Dateien",
+		"dismiss": "Schließen",
+		"settings": "Einstellungen"
+	}
+}

@@ -1,12 +1,19 @@
 import React from 'react';
+import {Provider} from 'react-redux'
+import App from './components/App';
+import {history, store} from './core'
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import './i18n';
+import './core/fontAwesome';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const render = () => { // this function will be reused
+    ReactDOM.render(
+            <Provider store={store}>
+                <App history={history}/> { /* pass history object as props */}
+            </Provider>,
+        document.getElementById('root')
+    )
+};
+
+render();

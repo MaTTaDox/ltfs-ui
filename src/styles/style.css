@@ -1,0 +1,37 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+#root {
+    height: 100%;
+}
+
+.container {
+    padding: 0 20px;
+}
+
+.error {
+    background-color: #B00020 !important;
+}
+
+.login {
+    height: 100%;
+    padding-top: 200px;
+}
+
+.center {
+    text-align: center;
+}
+
+
+.link {
+    color: white
+}
+
+.link:hover {
+    color: #BFBFBF
+}
