@@ -84,7 +84,7 @@ class Settings extends Component {
         const settings = this.props.user.user.settings ? this.props.user.user.settings : {};
 
         return <div>
-            <Button style={{marginBottom: '1em'}} variant="contained" color="primary" onClick={() => {
+            <Button disabled={this.props.user.isFetching} style={{marginBottom: '1em'}} variant="contained" color="primary" onClick={() => {
                 this.save()
             }}>
                 <Save className={classes.extendedIcon}/> {this.props.t('app.save')}
