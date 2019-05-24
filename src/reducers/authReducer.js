@@ -4,7 +4,7 @@ import {
 
 function authReducer(state = {
     isFetching: false,
-    isAuthenticated: !!localStorage.getItem('id_token')
+    isAuthenticated: !!localStorage.getItem('token')
 }, action) {
     switch (action.type) {
         case LOGIN_REQUEST:

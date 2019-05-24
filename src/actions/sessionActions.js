@@ -57,7 +57,8 @@ export function loginUser(creds, redirect = '/') {
                 }
             ).then(({user, response}) => {
                 if (!response.ok) {
-                    dispatch(loginError(user.title));
+                    console.log(user);
+                    dispatch(loginError(user.message));
                 } else {
 
                     localStorage.setItem('token', user.token);

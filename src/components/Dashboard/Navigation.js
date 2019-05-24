@@ -6,6 +6,7 @@ import {
     Divider,
     Drawer,
     IconButton,
+    LinearProgress,
     List,
     ListItem,
     ListItemIcon,
@@ -20,8 +21,10 @@ import Cloud from '@material-ui/icons/Cloud';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {withStyles} from '@material-ui/core/styles';
-import {compose} from "redux";
+import {bindActionCreators, compose} from "redux";
 import {withTranslation} from "react-i18next";
+import {loginUser, resetLogin} from "../../actions/sessionActions";
+import {connect} from "react-redux";
 
 const drawerWidth = 240;
 
@@ -68,9 +71,11 @@ class Navigation extends Component {
 
         const {classes} = this.props;
 
+        const loading = this.props.globalIsFetching && <LinearProgress />;
+
         return (
             <Fragment>
-                <AppBar color='default' position="static">
+                <AppBar color='default' position="static" style={{marginBottom: '1em'}}>
                     <Toolbar>
                         <IconButton onClick={() => {
                             this.toggleDrawer(true)
@@ -83,8 +88,8 @@ class Navigation extends Component {
                         <Typography variant="h6" color="inherit" className={classes.grow}>
                             {this.props.t('app.title')}
                         </Typography>
-                        <Button color="inherit">Login</Button>
                     </Toolbar>
+                    {loading}
                 </AppBar>
                 <ClickAwayListener onClickAway={() => this.toggleDrawer(false)}>
                     <Drawer
@@ -107,7 +112,7 @@ class Navigation extends Component {
                                 <ListItemIcon><Cloud/></ListItemIcon>
                                 <ListItemText primary={this.props.t('app.overview')}/>
                             </ListItem>
-                            <ListItem button key='account' component={Link} to="/account">
+                            <ListItem button key='settings' component={Link} to="/settings">
                                 <ListItemIcon><Settings/></ListItemIcon>
                                 <ListItemText primary={this.props.t('app.settings')}/>
                             </ListItem>
@@ -126,7 +131,27 @@ class Navigation extends Component {
     }
 }
 
+function mapStateToProps(state) {
+
+    let globalIsFetching = false;
+
+    Object.values(state).forEach((aState) => {
+        if (aState.isFetching) {
+            globalIsFetching = true;
+        }
+    });
+
+    return {globalIsFetching}
+}
+
+const mapDispatchToProps = (dispatch) => {
+
+    return {
+        actions: bindActionCreators({loginUser, resetLogin}, dispatch),
+    }
+};
 
 export default compose(
     withTranslation(),
-    withStyles(styles))(Navigation);
+    withStyles(styles),
+    connect(mapStateToProps, mapDispatchToProps))(Navigation);

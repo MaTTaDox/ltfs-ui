@@ -5,10 +5,14 @@
 		"email": "E-Mail",
 		"password": "Passwort",
 		"twitter": "Twitter",
+		"save": "Speichern",
 		"loginMessage": "Webinterface für <1>AWS Glacier</1>",
 		"github": "GitHub",
 		"overview": "Dateien",
 		"dismiss": "Schließen",
-		"settings": "Einstellungen"
+		"settings": "Einstellungen",
+		"credentials": "Zugangsdaten",
+		"accountData": "Accountdaten",
+		"awsHelp": "Was muss ich hier eintragen?"
 	}
 }
