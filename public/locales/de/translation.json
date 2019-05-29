@@ -1,6 +1,7 @@
 {
 	"app": {
 		"title": "Long-Term File Storage",
+		"startUp": "System wird Hochgefahren",
 		"login": "Einloggen",
 		"email": "E-Mail",
 		"password": "Passwort",

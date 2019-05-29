@@ -1,5 +1,27 @@
 import {push} from "connected-react-router";
+
 const BASE_URL = '/api/';
+
+const fetch_retry = (url, options, dispatch) => fetch(url, options).then( (response) => {
+    if (response.status === 503) {
+        dispatch({
+            type: 'START_UP'
+        });
+        setTimeout(() => {
+            return fetch_retry(url, options, dispatch).then((response) => {
+                return response;
+            });
+        }, 10000)
+    }
+    else {
+        dispatch({
+            type: 'NO_START_UP'
+        });
+
+        return response;
+    }
+
+});
 
 export default class Rest {
 
@@ -52,7 +74,7 @@ export default class Rest {
             params = '?' + (new URLSearchParams(parameter));
         }
 
-        return fetch(BASE_URL + endpoint + params, config)
+        return fetch_retry(BASE_URL + endpoint + params, config, dispatch)
             .then(response => {
                 return response.json().then((text) => ({text, response}), (e) => {
                     dispatch({
@@ -75,7 +97,7 @@ export default class Rest {
 
                 if (!response.ok) {
 
-                    let errorText = text.title;
+                    let errorText = text.error.message;
                     if (!errorText) {
                         errorText = "Ein Fehler ist aufgetreten";
                     }

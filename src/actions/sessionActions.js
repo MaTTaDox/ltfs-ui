@@ -1,11 +1,11 @@
 import {push} from 'connected-react-router';
+import Rest from "../core/Rest";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_RESET = 'LOGIN_RESET';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
 function requestLogin(creds) {
@@ -37,46 +37,38 @@ function loginError(message) {
 
 export function loginUser(creds, redirect = '/') {
 
-    let config = {
-        method: 'POST',
-        body: JSON.stringify(creds),
-        headers: new Headers({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        }),
-    };
-
     return dispatch => {
 
         // We dispatch requestLogin to kickoff the call to the API
         dispatch(requestLogin(creds));
 
-        return fetch('api/google_login', config)
-            .then(response => {
-                    return response.json().then(user => ({user, response}))
+        return Rest.fetch({
+            endpoint: 'api/google_login',
+            method: 'POST',
+            body: creds,
+        }, dispatch).then(
+            response => {
+                const user = response.response;
+                localStorage.setItem('token', user.token);
+                // Dispatch the success action
+                dispatch(receiveLogin(user));
+                if (!redirect) {
+                    redirect = '/';
                 }
-            ).then(({user, response}) => {
-                if (!response.ok) {
-                    console.log(user);
-                    dispatch(loginError(user.message));
-                } else {
 
-                    localStorage.setItem('token', user.token);
-                    // Dispatch the success action
-                    dispatch(receiveLogin(user));
-                    if (!redirect) {
-                        redirect = '/';
-                    }
+                dispatch({
+                    type: 'REMOVE_ALL_ALERT',
+                });
 
-                    dispatch({
-                        type: 'REMOVE_ALL_ALERT',
-                    });
+                dispatch(push(redirect))
+            },
+            error => {
+                dispatch(loginError(error.message));
 
-                    dispatch(push(redirect))
-                }
-            }).catch(err => {
-                dispatch(loginError(err.message))
-            });
+            }
+        ).catch(err => {
+            dispatch(loginError(err.message))
+        });
     }
 }
 

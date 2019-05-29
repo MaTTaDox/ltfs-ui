@@ -23,6 +23,11 @@ body {
     padding-top: 200px;
 }
 
+.startUp {
+    height: 100%;
+    padding-top: 300px;
+}
+
 .center {
     text-align: center;
 }
