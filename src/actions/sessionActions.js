@@ -43,7 +43,7 @@ export function loginUser(creds, redirect = '/') {
         dispatch(requestLogin(creds));
 
         return Rest.fetch({
-            endpoint: 'api/google_login',
+            endpoint: 'google_login',
             method: 'POST',
             body: creds,
         }, dispatch).then(
