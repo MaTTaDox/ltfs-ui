@@ -1,27 +1,7 @@
 import {push} from "connected-react-router";
+import fetch from 'fetch-retry';
 
 const BASE_URL = '/api/';
-
-const fetch_retry = (url, options, dispatch) => fetch(url, options).then( (response) => {
-    if (response.status === 503) {
-        dispatch({
-            type: 'START_UP'
-        });
-        setTimeout(() => {
-            return fetch_retry(url, options, dispatch).then((response) => {
-                return response;
-            });
-        }, 10000)
-    }
-    else {
-        dispatch({
-            type: 'NO_START_UP'
-        });
-
-        return response;
-    }
-
-});
 
 export default class Rest {
 
@@ -38,8 +18,7 @@ export default class Rest {
 
         if (auth && token) {
             header.Authorization = `Bearer ${token}`
-        }
-        else if (auth) {
+        } else if (auth) {
             dispatch(push('/login'));
         }
 
@@ -68,13 +47,30 @@ export default class Rest {
                     parameter[key + '[' + objectKey + ']'] = parameter[key][objectKey];
                 }
 
-                delete  parameter[key];
+                delete parameter[key];
             }
 
             params = '?' + (new URLSearchParams(parameter));
         }
 
-        return fetch_retry(BASE_URL + endpoint + params, config, dispatch)
+        config.retryOn = (attempt, error, response) => {
+            if (response.status === 503) {
+                dispatch({
+                    type: 'START_UP'
+                });
+
+                return true
+
+            } else {
+                dispatch({
+                    type: 'NO_START_UP'
+                });
+
+                return false;
+            }
+        };
+
+        return fetch(BASE_URL + endpoint + params, config)
             .then(response => {
                 return response.json().then((text) => ({text, response}), (e) => {
                     dispatch({
