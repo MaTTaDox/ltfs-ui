@@ -53,6 +53,7 @@ export default class Rest {
             params = '?' + (new URLSearchParams(parameter));
         }
 
+        config.retryDelay = 10000;
         config.retryOn = (attempt, error, response) => {
             if (response.status === 503) {
                 dispatch({
