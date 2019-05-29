@@ -34,7 +34,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://ltfs.mattadox.de",
+  "proxy": "http://ltfs.local",
   "eslintConfig": {
     "extends": "react-app"
   },

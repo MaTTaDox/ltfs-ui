@@ -27,7 +27,7 @@ class StartUp extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.time >= 80 && this.state.intervalId) {
+        if (this.state.time >= 180 && this.state.intervalId) {
             this.terminateInterval();
         }
     }
@@ -64,7 +64,7 @@ class StartUp extends Component {
 
     render() {
 
-        const percent = Math.round(this.state.time / 80 * 100);
+        const percent = Math.round(this.state.time / 180 * 100);
 
         console.log(percent);
         return (

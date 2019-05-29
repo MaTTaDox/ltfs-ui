@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {
     AppBar,
-    Button,
     ClickAwayListener,
     Divider,
     Drawer,
@@ -71,7 +70,7 @@ class Navigation extends Component {
 
         const {classes} = this.props;
 
-        const loading = this.props.globalIsFetching && <LinearProgress />;
+        const loading = this.props.globalIsFetching && <LinearProgress/>;
 
         return (
             <Fragment>
